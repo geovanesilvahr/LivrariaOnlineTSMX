@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pesquisar Livro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pJW9URBHV3svbUrOXwqPJmK7IoDw0Kqv0VaxdfXhXheV6HeLlRmw5pb/S3apGNkLMV5W3a2ZKJpRPe+1jqx2bw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f2f5;
+        color: #333;
+        padding: 20px;
+      }
+      
+      header {
+        background-color: #fff;
+        padding: 15px 30px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #007bff;
+        text-transform: uppercase;
+        text-decoration: none;
+      }
+      
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+      }
+      
+      nav ul li a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+      
+      nav ul li a:hover {
+        color: #007bff;
+      }
+      
+      .header-icons {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      
+      .header-icons a {
+        color: #333;
+        font-size: 1.5rem;
+        position: relative;
+        transition: color 0.3s;
+      }
+      
+      .header-icons a:hover {
+        color: #007bff;
+      }
+      
+      .header-icons .badge {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background-color: #ff6b6b;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 0.75rem;
+      }
+      
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        color: #4a4a4a;
+      }
+      
+      .search-bar {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+      
+      .search-bar input {
+        padding: 10px;
+        width: 250px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+      
+      .search-bar button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      
+      .search-bar button:hover {
+        background-color: #0056b3;
+      }
+      
+      .book-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        list-style: none;
+        padding: 0;
+      }
+      
+      .book-item {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        max-width: 300px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+      }
+      
+      .book-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+      
+      .book-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 15px;
+      }
+      
+      .book-item h2 {
+        font-size: 1.2rem;
+        color: #333;
+        margin-bottom: 10px;
+      }
+      
+      .book-item p {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 5px;
+      }
+      
+      .book-item a {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .book-item a:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <a href="#" class="logo">Livraria Online</a>
+      <nav>
+        <ul>
+          <li>
+            <a href="{% url 'homeSearch' %}">Home</a>
+          </li>
+          <li>
+            <a href="#">Categorias</a>
+          </li>
+          <li>
+            <a href="#">Contato</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="header-icons">
+        <a href="{% url 'login' %}" title="Conta"><i class="fas fa-user-circle"></i></a>
+        <a href="" title="Carrinho">
+          <i class="fas fa-shopping-cart"></i>
+          {% if request.user.cart.items.count > 0 %}
+            <span class="badge">{{ request.user.cart.items.count }}</span>
+          {% endif %}
+        </a>
+      </div>
+    </header>
+
+    <h1>Qual livro quer ler hoje?</h1>
+
+    <div class="search-bar">
+      <form id="search-form" method="GET">
+        <input type="text" name="q" placeholder="Me diga ai..." required />
+        <button type="submit">Pesquisar</button>
+      </form>
+    </div>
+
+    <ul class="book-list" id="book-list">
+      {% for book in books %}
+        <li class="book-item">
+          {% if book.volumeInfo.imageLinks %}
+            <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}" />
+          {% else %}
+            <img src="https://via.placeholder.com/150" alt="Sem imagem disponível" />
+          {% endif %}
+          <h2>{{ book.volumeInfo.title }}</h2>
+          <p>
+            <strong>Autores:</strong> {{ book.volumeInfo.authors|join:', ' }}
+          </p>
+          <p>
+            <strong>Data de publicação:</strong> {{ book.volumeInfo.publishedDate }}
+          </p>
+          {% if book.saleInfo.listPrice %}
+            <p>
+              <strong>Preço: R$</strong> {{ book.saleInfo.listPrice.amount }}
+            </p>
+          {% else %}
+            <p>
+              <strong>Preço:</strong> Indisponível
+            </p>
+          {% endif %}
+          <a href="">Adicionar ao Carrinho</a>
+          <a href="{{ book.volumeInfo.infoLink }}" target="_blank">Ver mais</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
