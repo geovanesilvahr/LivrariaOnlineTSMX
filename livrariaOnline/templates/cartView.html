@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+        
+        h1 {
+            margin: 0;
+        }
+        
+        .cart-container {
+            width: 80%;
+            margin: 2em auto;
+            background-color: white;
+            padding: 2em;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .cart-table th, .cart-table td {
+            border: 1px solid #ddd;
+            padding: 1em;
+            text-align: center;
+        }
+        
+        .book-cover {
+            max-width: 100px;
+        }
+        
+        .remove-button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5em 1em;
+            cursor: pointer;
+        }
+        
+        .remove-button:hover {
+            background-color: #c0392b;
+        }
+        
+        .cart-summary {
+            margin-top: 2em;
+            text-align: right;
+        }
+        
+        .checkout-button {
+            background-color: #27ae60;
+            color: white;
+            padding: 1em 2em;
+            text-decoration: none;
+            font-size: 1.2em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .checkout-button:hover {
+            background-color: #2ecc71;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Carrinho de Compras</h1>
+    </header>
+    
+    <section class="cart-container">
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Capa</th>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Total</th>
+                    <th>Remover</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td><img src="{{ book.cover_url }}" alt="Capa do Livro" class="book-cover"></td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>
+                        <input type="number" value="{{ book.quantity }}" min="1">
+                    </td>
+                    <td>R$ {{ book.price }}</td>
+                    <td>R$ {{ book.total_price }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'remove_book_from_cart' book.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="remove-button">Remover</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="cart-summary">
+            <h2>Total: R$ {{ cart_total }}</h2>
+            <a href="#" class="checkout-button">Finalizar Compra</a>
+        </div>
+    </section>
+</body>
+</html>

@@ -15,7 +15,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f0f2f5;
+            background: linear-gradient(135deg, #71b7e6, #9b59b6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -25,7 +25,7 @@
 
         .container {
             background-color: #fff;
-            padding: 40px;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             max-width: 400px;
@@ -115,6 +115,10 @@
                 <input type="email" id="email" name="email" placeholder="Digite seu email" required>
             </div>
             <div class="input-group">
+                <label for="address">Endereço</label>
+                <input type="address" id="address" name="address" placeholder="Digite seu endereço" required>
+            </div>  
+            <div class="input-group">
                 <label for="password">Senha</label>
                 <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
             </div>
@@ -125,7 +129,7 @@
             <button type="submit" class="btn">Cadastrar</button>
         </form>
         <div class="footer-text">
-            Já tem uma conta? <a href="#">Faça login</a>
+            Já tem uma conta?<a href="{% url 'loginUser' %}">Faça login</a>
         </div>
     </div>
 

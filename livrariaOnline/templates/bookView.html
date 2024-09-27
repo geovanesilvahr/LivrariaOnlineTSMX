@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização do Livro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+            font-size: 2rem;
+        }
+
+        .book-cover {
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .details {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .details p {
+            margin: 10px 0;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .footer-text a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>{{ book.volumeInfo.title }}</h2>
+        {% if book.volumeInfo.imageLinks %}
+        <img class="book-cover" src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="{{ book.volumeInfo.title }}">
+        {% endif %}
+        <div class="details">
+            <p><strong>Categoria:</strong> {{ book.volumeInfo.categories|join:", "|truncatewords:20 }}</p>
+            <p><strong>Autores:</strong> {{ book.volumeInfo.authors|join:", " }}</p>
+            <p><strong>Data de publicação:</strong> {{ book.volumeInfo.publishedDate }}</p>
+            <p><strong>Número de Páginas:</strong> {{ book.volumeInfo.pageCount }}</p>
+            <p><strong>Editora/Publicadora:</strong> {{ book.volumeInfo.publisher }}</p>
+            <p><strong>Preço: R$</strong> {{ book.saleInfo.listPrice.amount }}</p>
+            <p><strong>Sinopse:</strong> {{ book.volumeInfo.description|striptags|truncatewords:30 }}</p>
+        </div>
+        <a href="{% url 'homeSearch' %}" class="btn">Voltar à busca</a> 
+        <div class="footer-text">
+            <a href="#">Adicionar ao Carrinho</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
