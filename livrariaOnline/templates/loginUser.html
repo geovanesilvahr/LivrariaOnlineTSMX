@@ -92,6 +92,7 @@
             background: #9b59b6;
             border: none;
             color: white;
+            margin-bottom: 20px;
             padding: 12px;
             font-size: 1rem;
             border-radius: 5px;
@@ -125,6 +126,7 @@
 
 <body>
     <div class="login-container">
+        <a href="{% url 'homeSearch' %}" class="btn">Voltar</a>
         <div class="login-box">
             <h2>Login</h2>
             <form method="POST" action="{% url 'loginUser' %}">{% csrf_token %}

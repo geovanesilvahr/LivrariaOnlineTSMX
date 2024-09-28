@@ -1,9 +1,9 @@
 import requests
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
 
 from livrariaOnline.models import Book, Cart
 
@@ -71,41 +71,8 @@ def bookView(request, book_id):
     return render(request, "bookView.html", {"book": book})
 
 
-"""
-def cartView(request):
-   
-    cart_id = request.session.get("cart_id", None)
-    if cart_id in None:
-        print("Create New Cart")
-        request.session["cart_id"] = 12
-    else:
-        print("Cardt ID Exists")
-    return render(request, "cartView.html")
-
 def cartAdd(request, book_id):
-    request.session['books'] = book_id
+    request.session['carrinho'] = book_id
     print( request.session['books'])
+    
     return HttpResponse(request.session['books'])
-"""
-
-
-def cartAdd(request, book_id):
-    if request.user.is_authenticated:
-        user = request.user
-        book = get_object_or_404(Book, id=book_id)  # Obtém o objeto Book
-
-        cart_item, created = Cart.objects.get_or_create(user=user, book=book)
-
-        if not created:
-            cart_item.quantity += (
-                1  # Incrementa a quantidade se o item já estiver no carrinho
-            )
-            cart_item.save()
-
-        return HttpResponse(
-            f"Added Book ID: {book_id} to cart. Quantity: {cart_item.quantity}"
-        )
-    else:
-        return HttpResponse(
-            "You need to be logged in to add items to the cart.", status=401
-        )
